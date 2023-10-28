@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Model\Resourse\Images\702f6a9e4fd6fa2ca4ab57832e45d496.jpg" />
   </ItemGroup>
 

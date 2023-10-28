@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Image Source="..\Model\Resourse\Images\702f6a9e4fd6fa2ca4ab57832e45d496.jpg"></Image>
+        <Image Source="{Binding ImagePath}"></Image>
     </Grid>
 </Window>
