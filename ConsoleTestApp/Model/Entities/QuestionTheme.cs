@@ -11,6 +11,6 @@ namespace WPF3.Model.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Qustions> Qustions { get; set; }
+        public ICollection<Questions> Qustions { get; set; }
     }
 }

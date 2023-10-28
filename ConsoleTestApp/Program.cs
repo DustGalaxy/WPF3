@@ -32,7 +32,7 @@ namespace Test
 
                 context.QuestionThemes.Add(qt);
 
-                var quest = new Qustions()
+                var quest = new Questions()
                 {
                     Answer = "На сцепление жми!",
                     Question = "Что должен сделать :%:?!%:№ при №*;(?№",
