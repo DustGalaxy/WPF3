@@ -7,8 +7,8 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
             using (Context context = new Context()) ;
+            Console.WriteLine("Hello, World!");
         }
     }
 
