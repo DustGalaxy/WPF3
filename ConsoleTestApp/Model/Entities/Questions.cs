@@ -24,8 +24,9 @@ namespace WPF3.Model.Entities
 
         public string? ImageSrc { get; set; }
 
-
-        public ICollection<WrongAnswers> Answers { get; set; }
+        public string? WAns1 { get; set; }
+        public string? WAns2 { get; set; }
+        public string? WAns3 { get; set; }
         public ICollection<Tests> Tests { get; set; }
     }
 }

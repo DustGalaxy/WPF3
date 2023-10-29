@@ -9,7 +9,7 @@ namespace WPF3.Model.Entities
     class User
     {
         /// <summary>
-        /// Клас моделі що преставляє сутність у БД 
+        /// Клас моделі що представляє сутність у БД 
         /// Сутність що зберігає данні користувачів
         /// </summary>
         public int UserId { get; set; }

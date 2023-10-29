@@ -16,8 +16,8 @@ namespace WPF3.Model
         /// </summary>
         public Context() 
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //database.ensuredeleted();
+            //database.ensurecreated();
         }
 
         // конфігуруємо підключення до БД
@@ -30,7 +30,7 @@ namespace WPF3.Model
         public DbSet<User> Users { get; set; }
         public DbSet<QuestionTheme> QuestionThemes { get; set; }
         public DbSet<Questions> Qustions { get; set; }
-        public DbSet<WrongAnswers> Answers { get; set; }
+        // public DbSet<WrongAnswers> Answers { get; set; }
         public DbSet<Results> Results { get; set; }
         public DbSet<Tests> Tests { get; set; }
         public DbSet<TimeOuts> TimeOuts { get; set; }
