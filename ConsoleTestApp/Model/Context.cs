@@ -16,8 +16,8 @@ namespace WPF3.Model
         /// </summary>
         public Context() 
         {
-            //database.ensuredeleted();
-            //database.ensurecreated();
+            // Database.EnsureDeleted();
+            // Database.EnsureCreated();
         }
 
         // конфігуруємо підключення до БД
