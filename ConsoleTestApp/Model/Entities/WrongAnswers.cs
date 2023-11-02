@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPF3.Model.Entities
+namespace Test.Model.Entities
 {
     class WrongAnswers
     {

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPF3.Model.Entities;
-
-namespace ConsoleTestApp.Model.Entities
+﻿namespace Test.Model.Entities
 {
     class Tests
     {   

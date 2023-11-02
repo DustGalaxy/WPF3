@@ -1,13 +1,12 @@
-﻿using ConsoleTestApp.Model.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPF3.Model.Entities;
+using Test.Model.Entities;
 
-namespace WPF3.Model
+namespace Test.Model
 {
     class Context : DbContext
     {

@@ -1,4 +1,4 @@
-﻿using ConsoleTestApp.Model.Entities;
+﻿using Test.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPF3.Model.Entities
+namespace Test.Model.Entities
 {
     class Questions
     {
