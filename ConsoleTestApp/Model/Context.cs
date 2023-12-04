@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ConsoleTestApp.Model.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +16,13 @@ namespace Test.Model
         /// </summary>
         public Context() 
         {
-            // Database.EnsureDeleted();
-            // Database.EnsureCreated();
+            
         }
 
         // конфігуруємо підключення до БД
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"host=localhost;port=5432;database=newera;username=wpfapp;password=1111");
+            optionsBuilder.UseNpgsql(@"host=localhost;port=5432;database=NewDatabase;username=wpfapp;password=1111");
         }
 
         // реєструємо сутності для EFC
@@ -33,5 +33,6 @@ namespace Test.Model
         public DbSet<Results> Results { get; set; }
         public DbSet<Tests> Tests { get; set; }
         public DbSet<TimeOuts> TimeOuts { get; set; }
+        public DbSet<Mail> Mails { get; set; }
     }
 }

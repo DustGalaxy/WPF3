@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPF3
+namespace WPF3.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для Admin.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Admin : UserControl
     {
-        public MainWindow()
+        public Admin()
         {
             InitializeComponent();
         }

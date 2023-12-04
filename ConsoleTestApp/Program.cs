@@ -40,32 +40,35 @@ namespace Test
             //}
 
 
+
             using (Context context = new Context())
             {
-                var questions = context.Qustions.Include(p => p.QuestionTheme);
 
-                foreach (var item in questions)
+                var user = new User()
                 {
-                    Console.WriteLine($"{item.Question}, {item.Answer}, {item.QuestionTheme?.Name}");
-                }
-                questions.First().Answer = "20";
-                Models.update_question(questions.First());
+                    Name = "Test",
+                    Surname = "Test",
+                    Email = "Test",
+                    Password = "Test",
+                    UserType = 1
+                };
+
+                context.Users.Add(user);
             }
 
 
 
-            using (Context context = new Context())
-            {
-                var qe = context.Qustions.Include(p => p.QuestionTheme);
+            //var user2 = new User()
+            //{
+            //    Name = "Test2",
+            //    Surname = "Test2",
+            //    Email = "Test2",
+            //    Password = "Test2",
+            //    UserType = 1
+            //};
 
-                foreach (var item in qe)
-                {
-                    Console.WriteLine($"{item.Question}, {item.Answer}, {item.QuestionTheme?.Name}");
-                }
-
-            }
-
-            Console.WriteLine("Hello, World!");
+            //string str = $"{Models.ValidateUser(user.Email)}, {Models.ValidateUser(user2.Email)}";
+            //Console.WriteLine(str);
 
 
         }
