@@ -8,10 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListBox ItemsSource="{Binding TestList}" SelectedItem="{Binding SelectedTest}" RenderTransformOrigin="1.097,0.271" Margin="10,10,569,75"/>
-        <Button Command="{Binding CreateTestCommand}" Content="Створити новий тест" HorizontalAlignment="Left" Margin="10,380,0,0" VerticalAlignment="Top" Height="24" Width="177"/>
-        <Button Command="{Binding UpdateTestCommand}" Content="Змінити тест" HorizontalAlignment="Left" Margin="10,409,0,0" VerticalAlignment="Top" Height="24" Width="177"/>
-        <Button Command="{Binding DeleteTestCommand}" Content="   X   " HorizontalAlignment="Left" Margin="192,409,0,0" VerticalAlignment="Top" Height="24" Width="39"/>
+
+        <ListBox ItemsSource="{Binding TestList}" SelectedItem="{Binding SelectedTest}" Margin="10,10,0,0" Height="301" VerticalAlignment="Top" HorizontalAlignment="Left" Width="221"/>
+        <Button Command="{Binding CreateTestCommand}" Content="Створити новий тест" Margin="10,324,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="177"/>
+        <Button Command="{Binding UpdateTestCommand}" Content="Змінити тест" Margin="10,353,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="177"/>
+        <Button Command="{Binding DeleteTestCommand}" Content="   X   " Margin="192,353,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="39"/>
+        
 
     </Grid>
 

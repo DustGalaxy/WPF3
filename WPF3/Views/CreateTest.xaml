@@ -8,10 +8,27 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListBox SelectedItem="{Binding SelectedLeft}" ItemsSource="{Binding QuestionListFrom}" Margin="76,48,435,48"/>
-        <Button Command="{Binding CommandLoad}" Content="Button" HorizontalAlignment="Left" Margin="23,225,0,0" VerticalAlignment="Top"/>
-        <ListBox SelectedItem="{Binding SelectedRight}" ItemsSource="{Binding QuestionListTo}" Margin="390,48,108,48"/>
-        <Button Command="{Binding MoveRightCommand}" Content=">>>" HorizontalAlignment="Left" Margin="336,407,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.328,0.544"/>
-        <Button Command="{Binding MoveLeftCommand}" Content="----" HorizontalAlignment="Left" Margin="390,407,0,0" VerticalAlignment="Top"/>
+
+        <ListBox SelectedItem="{Binding SelectedLeft}" ItemsSource="{Binding QuestionListFrom}" Margin="10,10,0,0" Height="343" VerticalAlignment="Top" HorizontalAlignment="Left" Width="289"/>
+        <ListBox SelectedItem="{Binding SelectedRight}" ItemsSource="{Binding QuestionListTo}" Margin="315,10,0,0" HorizontalAlignment="Left" Width="302" Height="343" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="622,103,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="168" Height="20"/>
+        <TextBox HorizontalAlignment="Left" Margin="622,159,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="168" Height="170"/>
+
+
+        <mah:NumericUpDown Minimum="1" Maximum="{Binding MaxNumeric}" Value="{Binding NumericValue}" HorizontalAlignment="Left" Margin="622,41,0,0" VerticalAlignment="Top" Width="168"/>
+
+
+        <Label Content="Опис" HorizontalAlignment="Left" Margin="622,128,0,0" VerticalAlignment="Top" Width="168"/>
+        <Label Content="Назва тесту" HorizontalAlignment="Left" Margin="622,72,0,0" VerticalAlignment="Top" Width="168"/>
+        <Label Content="Кількість питань" HorizontalAlignment="Left" Margin="622,10,0,0" VerticalAlignment="Top"/>
+
+
+        <Button Command="{Binding CreateNewQuestionCommand}" Content="Створити нове питання" Margin="10,383,0,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="144"/>
+        <Button Command="{Binding MoveRightCommand}" Content="Додати до тесту" Margin="199,358,0,0" RenderTransformOrigin="1.328,0.544" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100"/>
+        <Button Command="{Binding MoveLeftCommand}" Content="Видалити з тесту" Margin="315,358,0,0" HorizontalAlignment="Left" Width="100" Height="20" VerticalAlignment="Top"/>
+        <Button Command="{Binding UpdateQuestionCommand}" Content="Редагувати питання" HorizontalAlignment="Left" Margin="10,358,0,0" VerticalAlignment="Top" Height="20" Width="144"/>
+        <Button Command="{Binding NavToAdminCommand}" Content="Повернутися"  HorizontalAlignment="Left" Margin="684,383,0,0" VerticalAlignment="Top" Width="106"/>
+        <Button Command="{Binding CreateNewTestCommand}" Content="Створити тест"  HorizontalAlignment="Left" Margin="622,334,0,0" VerticalAlignment="Top" Width="168"/>
+
     </Grid>
 </UserControl>

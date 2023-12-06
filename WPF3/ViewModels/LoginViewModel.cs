@@ -90,7 +90,6 @@ namespace WPF3.ViewModels
                 try
                 {
                     Debug1 = Email + " " + box.SecurePassword;
-                    MessageBox.Show("12313123");
                     user = serviceUser.LoginUser(Email, box.SecurePassword);
                     
                     switch (user.UserType)
@@ -125,7 +124,6 @@ namespace WPF3.ViewModels
 
         public void NavigateToRegister()
         {
-            MessageBox.Show("12313123");
 
             _regionManager.RequestNavigate(Regions.ContentRegion, "Register", new NavigationParameters());
         }

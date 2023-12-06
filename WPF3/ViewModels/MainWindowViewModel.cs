@@ -33,7 +33,7 @@ namespace WPF3.ViewModels
         }
         
 
-        private string _title = "hfgsdhjkf";
+        private string _title = "Тести для отримання водійского посвідчення";
 
         public string Title 
         { 

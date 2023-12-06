@@ -9,11 +9,38 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF3.Infrastructure;
 
 namespace WPF3.ViewModels
 {
     internal class CreateTestViewModel : BindableBase, INavigationAware
     {
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+
+        }
+
+        public IRegionManager _regionManager { get; private set; }
+
+        public CreateTestViewModel(IRegionManager regionManager)
+        { 
+            _regionManager = regionManager;
+
+        }
+
+
+
         public ObservableCollection<String> QuestionListFrom { get; private set; } = new ObservableCollection<String>();
         public ObservableCollection<String> QuestionListTo { get; private set; } = new ObservableCollection<String>();
 
@@ -80,19 +107,16 @@ namespace WPF3.ViewModels
             QuestionListTo.Remove(SelectedRight);
         }
 
-        public void OnNavigatedTo(NavigationContext navigationContext)
+
+        private DelegateCommand _createnewquestioncommand = null;
+        public DelegateCommand CreateNewQuestionCommand =>
+            _createnewquestioncommand ?? (_createnewquestioncommand = new DelegateCommand(CreateNewQuestion));
+        
+        public void CreateNewQuestion()
         {
-            
+            _regionManager.RequestNavigate(Regions.ContentRegion, "CreateQuestion");
         }
 
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
 
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            
-        }
     }
 }

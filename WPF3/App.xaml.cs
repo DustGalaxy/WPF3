@@ -3,8 +3,8 @@ using Prism.Modularity;
 using System.Windows;
 using WPF3.Model;
 using WPF3.Module;
+using WPF3.ViewModels;
 using WPF3.Views;
-using User = WPF3.Model.Entities.User;
 
 namespace WPF3
 {
@@ -23,13 +23,14 @@ namespace WPF3
             containerRegistry.Register<Services.IDataTimeOut, Services.ServiceTimeOut>();
             containerRegistry.Register<Services.IDataQuestionTheme, Services.ServiceQuestionTheme>();
             containerRegistry.Register<Services.IDataUser, Services.ServiceUser>();
-           
+            containerRegistry.Register<Services.IElementService, Services.ElementService>();
+            containerRegistry.RegisterDialog<CreateQuestionTheme, CreateQuestionThemeViewModel>("CreateQustionThemeDialog");
 
         }
 
         protected override Window CreateShell()
         {
-
+            using (Context context = new Context());
             var w = Container.Resolve<MainWindow>();
             return w;
         }

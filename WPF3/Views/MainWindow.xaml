@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:WPF3.Views" 
         x:Class="WPF3.Views.MainWindow"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="500" Width="800" ResizeMode="NoResize">
+        Title="{Binding Title}" Height="480" Width="830" ResizeMode="NoResize">
     <Grid>
         <ContentControl prism:RegionManager.RegionName="ContentRegion"/>
     </Grid>

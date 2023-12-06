@@ -70,7 +70,6 @@ namespace WPF3.ViewModels
                 { "Test", null }
             };
             _regionManager.RequestNavigate(Regions.ContentRegion, "CreateTest", param);
-            MessageBox.Show("NO");
         }
 
         private DelegateCommand _updatetestcommand;

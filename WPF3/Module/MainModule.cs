@@ -25,6 +25,8 @@ namespace WPF3.Module
             containerRegistry.RegisterForNavigation<Register>("Register");
             containerRegistry.RegisterForNavigation<Login>("Login");
             containerRegistry.RegisterForNavigation<CreateTest>("CreateTest");
+            containerRegistry.RegisterForNavigation<CreateQuestion>("CreateQuestion");
+            containerRegistry.RegisterForNavigation<CreateQuestionTheme>("CreateQuestionTheme");
         }
     }
 }
