@@ -81,6 +81,8 @@ namespace WPF3.ViewModels
 
         void LogInCommandExecute(object parameter)
         {
+            _regionManager.RequestNavigate(Regions.ContentRegion, "User", new NavigationParameters{{"userId", 2}});
+            return;
             PasswordBox box = (PasswordBox)parameter;
             ServiceUser serviceUser = new ServiceUser();
             User user = new User();

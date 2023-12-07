@@ -24,6 +24,10 @@ namespace WPF3
             containerRegistry.Register<Services.IDataQuestionTheme, Services.ServiceQuestionTheme>();
             containerRegistry.Register<Services.IDataUser, Services.ServiceUser>();
             containerRegistry.Register<Services.IElementService, Services.ElementService>();
+            containerRegistry.Register<Services.IExportTxt, Services.ExportTxt>();
+            containerRegistry.Register<Services.IShuffleList, Services.ShuffleListService>();
+
+
             containerRegistry.RegisterDialog<CreateQuestionTheme, CreateQuestionThemeViewModel>("CreateQustionThemeDialog");
 
         }

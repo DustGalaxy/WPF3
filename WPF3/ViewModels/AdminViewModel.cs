@@ -21,17 +21,17 @@ namespace WPF3.ViewModels
         IRegionManager _regionManager { get; set; }
         
 
-        ObservableCollection<string> TestList = new ObservableCollection<string>();
+        public ObservableCollection<string> TestList { get; private set; } = new ObservableCollection<string>();
 
         public AdminViewModel(IRegionManager iregionManager)
         {
             _regionManager = iregionManager;
 
-            FillTestLIst();
         }
 
         private void FillTestLIst()
         {
+            // MessageBox.Show($"{testdict.Keys.ToList().FirstOrDefault("no")}");
             foreach (var i in testdict.Keys.ToList())
                 TestList.Add(i);
         }
@@ -42,11 +42,11 @@ namespace WPF3.ViewModels
         
         
 
-        private string _selectedtest;
+        private string _selectedtest = null;
         public string SelectedTest
         {
             get => _selectedtest;
-            set => SetProperty(ref _selectedtest, value);
+            set => SetProperty<string>(ref _selectedtest, value);
         }
 
         private string _errorlabel;
@@ -60,48 +60,26 @@ namespace WPF3.ViewModels
 
         private DelegateCommand _createtestcommand;
 
-        public DelegateCommand CreateTestCommand => _createtestcommand ??= new DelegateCommand(CreateTestExecute);
+        public DelegateCommand CreateTestCommand => 
+            _createtestcommand ??= new DelegateCommand(CreateTestExecute);
 
         public void CreateTestExecute()
         {
-
-            NavigationParameters param = new()
-            {
-                { "Test", null }
-            };
-            _regionManager.RequestNavigate(Regions.ContentRegion, "CreateTest", param);
+            _regionManager.RequestNavigate(Regions.ContentRegion, "CreateTest");
         }
 
-        private DelegateCommand _updatetestcommand;
-        public DelegateCommand UpdateTestCommand => _updatetestcommand ??= new DelegateCommand(UpdateTestExecute, IsSelectedTest);
 
-        public void UpdateTestExecute()
+        private DelegateCommand _navToLoginCommand;
+        public DelegateCommand NavToLoginCommand =>
+            _navToLoginCommand ??= new DelegateCommand(NavToLogin);
+
+        public void NavToLogin()
         {
-            if (SelectedTest != null)
-            {
-                NavigationParameters param = new NavigationParameters
-                {
-                    { "Test", SelectedTest }
-                };
-                _regionManager.RequestNavigate(Regions.ContentRegion, "CreateTest", param);
-            }
-            else
-            {
-                ErrorLabel = "No test selected";
-            }     
+            _regionManager.RequestNavigate(Regions.ContentRegion, "Login");
         }
-
-        private bool IsSelectedTest()
-        {
-            if (SelectedTest != null)
-                return true;
-            else 
-                return false;
-        }
-
 
         private DelegateCommand _deletetestcommand;
-        public DelegateCommand DeleteTestCommand => _deletetestcommand ??= new DelegateCommand(DeleteTestExecute, IsSelectedTest);
+        public DelegateCommand DeleteTestCommand => _deletetestcommand ??= new DelegateCommand(DeleteTestExecute);
 
         public void DeleteTestExecute()
         {
@@ -114,17 +92,26 @@ namespace WPF3.ViewModels
                     int id = testdict[SelectedTest].Id;
 
                     serviceTest.DeleteTest(id);
+                    UpdTestList();
                 }
             }
             else
             {
+                MessageBox.Show("No test selected");
                 ErrorLabel = "No test selected";
             }
         }
 
+        public void UpdTestList()
+        {
+            TestList.Clear();
+            FillTestLIst();
+        }
+
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            FillTestLIst();
+            UpdTestList();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

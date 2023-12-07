@@ -7,6 +7,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <ListBox SelectedItem="{Binding SelectedMail}" ItemsSource="{Binding MailList}" Margin="643,0,0,0" HorizontalAlignment="Left" Width="147" Height="368" VerticalAlignment="Center"/>
+        <ListBox SelectedItem="{Binding SelectedTest}" ItemsSource="{Binding TestList}" Margin="421,41,0,0" HorizontalAlignment="Left" Width="217" Height="214" VerticalAlignment="Top"/>
+        <ListBox ItemsSource="{Binding ResultList}" Margin="102,41,0,0" Height="385" VerticalAlignment="Top" HorizontalAlignment="Left" Width="314"/>
+        <ListBox ItemsSource="{Binding TimeOutList}" Margin="421,319,0,0" Height="107" VerticalAlignment="Top" HorizontalAlignment="Left" Width="217"/>
+        
+        <Button Command="{Binding StartTestCommand}" Content="Розпочати тест" HorizontalAlignment="Left" Margin="421,260,0,0" VerticalAlignment="Top" Width="217" Height="23"/>
+        <Button Content="Видалити повідомлення" HorizontalAlignment="Left" Margin="643,399,0,0" VerticalAlignment="Top" Height="28" Width="147"/>
+        <Button Command="{Binding ExportTxtCommand}" Content="Експорт txt" HorizontalAlignment="Left" Margin="302,10,0,0" VerticalAlignment="Top" Width="114" Height="27"/>
+        <Button Command="{Binding NavToLoginCommand}" Content="Вихід" HorizontalAlignment="Left" Margin="10,399,0,0" VerticalAlignment="Top" Height="27" Width="87"/>
+        
+        <Label Content="{Binding UserName}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="26"/>
+        <Label Content="Результати" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="195" Height="26"/>
+        <Label Content="Повідомлення" HorizontalAlignment="Left" Margin="643,10,0,0" VerticalAlignment="Top" Width="147" Height="26"/>
+        <Label Content="Тайм аути" HorizontalAlignment="Left" Margin="421,288,0,0" VerticalAlignment="Top" Width="217" Height="26"/>
+        <Label Content="Тести" HorizontalAlignment="Left" Margin="435,10,0,0" VerticalAlignment="Top" Width="217" Height="26"/>
+
     </Grid>
 </UserControl>

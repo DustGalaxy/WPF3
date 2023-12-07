@@ -8,14 +8,14 @@ namespace WPF3.Services
 {
     interface IShuffleList
     {
-        extern static void ShuffleList(List<string> list);
+        public void ShuffleList(ref List<string> list);
     }
 
 
 
     class ShuffleListService : IShuffleList
     {
-        public static void ShuffleList(List<string> list)
+        public void ShuffleList(ref List<string> list)
         {
             Random random = new Random();
             int n = list.Count;

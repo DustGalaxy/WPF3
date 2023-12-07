@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MahApps.Metro.Controls;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +27,7 @@ namespace WPF3.Services
     {
         public void Create(Results res);
         public List<Results> GetResults();
-        public Results GetResultsByUser(int userId);
+        public List<Results> GetUserResults(int userId);
 
     }
 
@@ -50,11 +51,11 @@ namespace WPF3.Services
             }
         }
 
-        public Results GetResultsByUser(int userId)
+        public List<Results> GetUserResults(int userId)
         {
             using (Context context = new Context())
             {
-                return context.Results.Include(p => p.Tests).Include(p => p.User).Where(p => p.UserId == userId).First();
+                return context.Results.Include(p => p.Tests).Include(p => p.User).Where(p => p.UserId == userId).ToList();
             }
         }
     }
@@ -64,7 +65,7 @@ namespace WPF3.Services
     {
         public List<TimeOuts> GetTimeouts(int userId);
         public void CreateTimeOut(User user, Tests test, DateTime dateTime);
-        public TimeOuts Time_out_check(int userId, int testId);
+        public bool Time_out_check(int userId, int testId);
     }
     
     class ServiceTimeOut : IDataTimeOut
@@ -92,14 +93,25 @@ namespace WPF3.Services
             }
         }
 
-        public TimeOuts Time_out_check(int userId, int testId)
+        public bool Time_out_check(int userId, int testId)
         {
             using (Context context = new Context())
             {
-                return context.TimeOuts.Include(p => p.Test)
-                                       .Include(p => p.User)
-                                       .Where(p => p.UserId == userId)
-                                       .Where(p => p.TestId == testId).First();
+                
+                try
+                {
+                   var timeout = context.TimeOuts
+                        .Where(p => p.UserId == userId)
+                        .Where(p => p.TestId == testId)
+                        .Where(p => p.ToUnblockDate > DateTime.Now).First();
+                }
+                catch (Exception e)
+                {
+                    return true;
+
+                }
+
+                return false;
             }
         }
     }
@@ -141,7 +153,9 @@ namespace WPF3.Services
             using (Context context = new Context())
             {
                 return context.Tests.Include(p => p.Questions)
-                                    .Where(p => p.Id == testId).First();
+                                    .ThenInclude(p => p.QuestionTheme)
+                                    .Where(p => p.Id == testId)
+                                    .First();
             }
         }
 
@@ -149,6 +163,7 @@ namespace WPF3.Services
         {
             using (Context context = new Context())
             {
+                test.Questions = context.Qustions.Where(p => test.QuestionsId.Contains(p.Id)).ToList();
                 context.Tests.Add(test);
                 context.SaveChanges();
             }
@@ -179,7 +194,17 @@ namespace WPF3.Services
         {
             using (Context context = new Context())
             {
-                return context.Qustions.Where(p => p.Tests == test).ToList();
+                try
+                {
+                    return context.Tests.Include(p => p.Questions).Where(p => p.Id == test.Id).First().Questions;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                    Debug.WriteLine("Test does`t exist");
+                    return new List<Questions>();
+                }
+                
             }
         }
 
@@ -223,6 +248,8 @@ namespace WPF3.Services
         public void CreateQuestion(Questions question);
         public void UpdateQuestion(Questions question);
         public void DeleteQuestion(Questions question);
+        public List<Questions> GetQuestionsList();
+        public Dictionary<string, Questions> GetQuestionDictionary();
     }
 
     class ServiceQuestion : IDataQuestion
@@ -253,6 +280,25 @@ namespace WPF3.Services
                 context.SaveChanges();
             }
         }
+
+        public List<Questions> GetQuestionsList()
+        {
+            using (Context context = new Context())
+            {
+                return context.Qustions.ToList();
+            }
+        }
+
+        public Dictionary<string, Questions> GetQuestionDictionary()
+        {
+            var questions = GetQuestionsList();
+            Dictionary<string, Questions> pairs = new Dictionary<string, Questions>();
+            foreach (var item in questions)
+            {
+                pairs.Add(item.Name, item);
+            }
+            return pairs;
+        }
     }
 
 
@@ -262,6 +308,7 @@ namespace WPF3.Services
         public void UpdateQustionTheme(QuestionTheme theme);
         public void DeleteQustionTheme(QuestionTheme theme);
         public List<QuestionTheme> GetThemesList();
+        public Dictionary<string, QuestionTheme> GetThemeDictionary();
     }
 
     class ServiceQuestionTheme : IDataQuestionTheme
@@ -300,6 +347,17 @@ namespace WPF3.Services
                 return context.QuestionThemes.ToList();
             }
         }
+
+        public Dictionary<string, QuestionTheme> GetThemeDictionary()
+        {
+            var questionThemes = GetThemesList();
+            Dictionary<string, QuestionTheme> pairs = new Dictionary<string, QuestionTheme>();
+            foreach (var item in questionThemes)
+            {
+                pairs.Add(item.Name, item);
+            }
+            return pairs;
+        }
     }
 
 
@@ -312,6 +370,7 @@ namespace WPF3.Services
         public void DeleteUser(User user);
         public User GetUser(int Id);
         public List<User> GetUsersByType(int type);
+        public Dictionary<string, User> GetUsersDictionary();
 
     }
 
@@ -400,6 +459,28 @@ namespace WPF3.Services
                 return context.Users.Where(p => p.UserType == type).ToList();
             }
         }
+
+        public List<User> GetUsersList()
+        {
+            using (Context context = new Context())
+            {
+                return context.Users.ToList();
+            }
+        }
+
+        public Dictionary<string, User> GetUsersDictionary()
+        {
+            using (Context context = new Context())
+            {
+                var questions = GetUsersList();
+                Dictionary<string, User> pairs = new Dictionary<string, User>();
+                foreach (var item in questions)
+                {
+                    pairs.Add(item.Name, item);
+                }
+                return pairs;
+            }
+        }
     }
 
 
@@ -408,6 +489,7 @@ namespace WPF3.Services
         public void CreateMail(Mail mail);
         public void UpdateMail(Mail mail);
         public void DeleteMail(Mail mail);
+        public Dictionary<string, Mail> GetMailsDictionary(int userId);
     }
 
     class ServiceMail : IDataMail
@@ -437,6 +519,21 @@ namespace WPF3.Services
                 context.Mails.Remove(mail);
                 context.SaveChanges();
             }
+        }
+
+        public Dictionary<string, Mail> GetMailsDictionary(int userId)
+        {
+            List<Mail> mails = new List<Mail>();
+            using (Context context = new Context())
+            {
+                mails = context.Mails.Where(p => p.UserId == userId).ToList();
+            }
+            Dictionary<string, Mail> pairs = new Dictionary<string, Mail>();
+            foreach (var item in mails)
+            {
+                pairs.Add(item.Message, item);
+            }
+            return pairs;
         }
     }
 

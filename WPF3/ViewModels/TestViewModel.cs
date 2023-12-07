@@ -4,30 +4,21 @@ using Prism.Regions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
+using WPF3.Infrastructure;
 using WPF3.Model.Entities;
 using WPF3.Services;
 
 namespace WPF3.ViewModels
 {
-    internal class TestViewModel : BindableBase, INavigationAware
+    class TestViewModel : BindableBase, INavigationAware
     {
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-
-        }
-
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             currTest = (Tests)navigationContext.Parameters["test"];
             user = (User)navigationContext.Parameters["user"];
+
             foreach (var item in currTest.Questions)
             {
-
                 List<string> list = new List<string>
                 {
                     item.Answer,
@@ -35,13 +26,13 @@ namespace WPF3.ViewModels
                     item.WAns2,
                     item.WAns3
                 };
+                
+                shuffleList.ShuffleList(ref list);
 
-                Services.ShuffleListService.ShuffleList(list);
+                //ElementModel element = new ElementModel();
+                //MessageBox.Show(element.ToString());
 
-                ElementModel element = new ElementModel();
-                MessageBox.Show(element.ToString());
-
-                _elementService.AddElement(new ElementModel
+                Elements.Add(new ElementModel
                 {
                     ImagePath = item.ImageSrc,
                     LabelText1 = item.QuestionTheme.Name,
@@ -60,32 +51,52 @@ namespace WPF3.ViewModels
 
         }
 
-        private readonly IElementService _elementService;
-        private readonly IRegionManager _regionManager;
 
-        public ObservableCollection<ElementModel> Elements => _elementService.GetElements();
-        private Tests currTest;
-        private User user;
-
-        public TestViewModel(IElementService elementService, IRegionManager regionManager)
+        public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            _elementService = elementService;
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            
+        }
+
+        Services.ShuffleListService shuffleList = new();
+        public IRegionManager _regionManager;
+        public TestViewModel(IRegionManager regionManager)
+        {
             _regionManager = regionManager;
         }
 
-        private DelegateCommand _endtestcommand;
-        public DelegateCommand Endtestcommand => _endtestcommand ??= new DelegateCommand(EndTest);
+
+
+        public ObservableCollection<ElementModel> Elements { get; private set; } = new();
+        private Tests currTest;
+        private User user;
+
+        private DelegateCommand _endTestCommand;
+        public DelegateCommand EndTestCommand => _endTestCommand ??= new DelegateCommand(EndTest);
 
 
         public void EndTest()
         {
 
             ServiceMail mailServices = new ServiceMail();
+            ServicesResult resultServices = new ServicesResult();
             Mail mail = new Mail();
+            Results res = new Results();
 
-            mail.Message = $"Ваш результат за тест \"{currTest.Name}\", довівнює: {TestCheck()}";
+            res.Result = TestCheck();
+            res.TestId = currTest.Id;
+            res.UserId = user.UserId;
+            resultServices.Create(res);
+
+            mail.Message = $"Ваш результат за тест \"{currTest.Name}\", довівнює: {res.Result}";
             mail.UserId = user.UserId;
             mailServices.CreateMail(mail);
+            MessageBox.Show("Спасибі за проходження тесту!","Тест завершенно");
+            _regionManager.RequestNavigate(Regions.ContentRegion, "User", new NavigationParameters{{"userId", user.UserId}});
         }
 
         public string TestCheck()

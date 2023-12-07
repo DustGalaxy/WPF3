@@ -13,7 +13,6 @@ namespace WPF3.Module
         {
             var region = containerProvider.Resolve<IRegionManager>();
             region.RegisterViewWithRegion(Regions.ContentRegion, typeof(Login));
-            // region.RegisterViewWithRegion("Register", typeof(Register));
 
         }
 
@@ -27,6 +26,7 @@ namespace WPF3.Module
             containerRegistry.RegisterForNavigation<CreateTest>("CreateTest");
             containerRegistry.RegisterForNavigation<CreateQuestion>("CreateQuestion");
             containerRegistry.RegisterForNavigation<CreateQuestionTheme>("CreateQuestionTheme");
+            containerRegistry.RegisterForNavigation<Test>("Test");
         }
     }
 }

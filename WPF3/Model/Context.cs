@@ -11,7 +11,7 @@ namespace WPF3.Model
         /// </summary>
         public Context() 
         {
-            
+
         }
 
         // конфігуруємо підключення до БД

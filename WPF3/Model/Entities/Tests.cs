@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WPF3.Model.Entities
 {
@@ -14,7 +15,9 @@ namespace WPF3.Model.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public int Count { get; set; }
-        public bool IsActived { get; set; } 
-        public ICollection<Questions> Questions { get; set; }
+        public bool IsActived { get; set; }
+        public List<Questions> Questions { get; set; } = new();
+        [NotMapped]
+        public List<int> QuestionsId { get; set; } = new();
     }
 }

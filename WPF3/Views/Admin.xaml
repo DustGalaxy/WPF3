@@ -3,17 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPF3.Views"
              xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
 
-        <ListBox ItemsSource="{Binding TestList}" SelectedItem="{Binding SelectedTest}" Margin="10,10,0,0" Height="301" VerticalAlignment="Top" HorizontalAlignment="Left" Width="221"/>
-        <Button Command="{Binding CreateTestCommand}" Content="Створити новий тест" Margin="10,324,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="177"/>
-        <Button Command="{Binding UpdateTestCommand}" Content="Змінити тест" Margin="10,353,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="177"/>
-        <Button Command="{Binding DeleteTestCommand}" Content="   X   " Margin="192,353,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="39"/>
-        
+        <ListBox ItemsSource="{Binding TestList}" 
+                 SelectedItem="{Binding SelectedTest}" 
+                 Margin="143,0,0,0" 
+                 Height="430" 
+                 Width="466"
+                 VerticalAlignment="Center" 
+                 HorizontalAlignment="Left"/>
+
+        <Button Command="{Binding CreateTestCommand}" 
+                Content="Створити новий тест" 
+                Margin="614,10,0,0" 
+                Width="176"
+                Height="24" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"/>
+
+        <Button Command="{Binding DeleteTestCommand}" 
+                Content="Видалити тест" 
+                Margin="614,39,0,0" 
+                Height="24" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left" 
+                Width="176"/>
+
+        <Button Command="{Binding NavToLoginCommand}"
+                Content="Повернитися" 
+                HorizontalAlignment="Left"
+                Margin="614,420,0,0" 
+                VerticalAlignment="Top" 
+                Width="176"/>
+
 
     </Grid>
 
