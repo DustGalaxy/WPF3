@@ -26,6 +26,37 @@ namespace WPF3.ViewModels
         public LoginViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
+
+            User admin = new User
+            {
+                Name = "admin",
+                Email = "admin",
+                Surname = "admin",
+                Password = "admin",
+                UserType = 1,
+            };
+
+            User manager = new User
+            {
+                Name = "manager",
+                Email = "manager",
+                Surname = "manager",
+                Password = "manager",
+                UserType = 2,
+            };
+
+            User user = new User
+            {
+                Name = "user",
+                Email = "user",
+                Surname = "user",
+                Password = "user",
+                UserType = 3,
+            };
+
+            serviceUser.CreateUser(admin);
+            serviceUser.CreateUser(manager);
+            serviceUser.CreateUser(user);
         }
 
 
@@ -81,8 +112,8 @@ namespace WPF3.ViewModels
 
         void LogInCommandExecute(object parameter)
         {
-            _regionManager.RequestNavigate(Regions.ContentRegion, "User", new NavigationParameters{{"userId", 2}});
-            return;
+            //_regionManager.RequestNavigate(Regions.ContentRegion, "Admin", new NavigationParameters{{"userId", 2}});
+            //return;
             PasswordBox box = (PasswordBox)parameter;
             ServiceUser serviceUser = new ServiceUser();
             User user = new User();
@@ -93,16 +124,24 @@ namespace WPF3.ViewModels
                 {
                     Debug1 = Email + " " + box.SecurePassword;
                     user = serviceUser.LoginUser(Email, box.SecurePassword);
-                    
+                    var param = new NavigationParameters
+                    {
+                        { "user", user }
+                    };
                     switch (user.UserType)
                     {
                         case 1:
-                            var param = new NavigationParameters
-                            {
-                                { "user", user }
-                            };
+
                             _regionManager.RequestNavigate(Regions.ContentRegion, "Admin", param);
-                        break;
+                            break;
+
+                        case 2:
+                            _regionManager.RequestNavigate(Regions.ContentRegion, "Manager", param); 
+                            break;
+
+                        case 3:
+                            _regionManager.RequestNavigate(Regions.ContentRegion, "User", param);
+                            break;
                     }
                 }
                 catch (Exception ex)
@@ -132,16 +171,7 @@ namespace WPF3.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            ServiceUser userServices = new ServiceUser();
-            User user = new()
-            {
-                UserType = 1,
-                Surname = "Test",
-                Name = "admin",
-                Password = "admin",
-                Email = "admin"
-            };
-            userServices.CreateUser(user);
+
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

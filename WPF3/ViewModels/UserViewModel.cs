@@ -22,17 +22,25 @@ namespace WPF3.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
+            listClear();
+        }
 
+        private void listClear()
+        {
+            MailList.Clear();
+            TestList.Clear();
+            ResultList.Clear();
+            TimeOutList.Clear();
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            userId = (int)navigationContext.Parameters["userId"];
-            UserName = servicesUser.GetUser(userId).Name;
+            user = (User)navigationContext.Parameters["user"];
+            UserName = user.Name;
             dictTests = servicesTest.GetTestsDict();
-            dictMail = servicesMail.GetMailsDictionary(userId);
-            var results = servicesResult.GetUserResults(userId);
-            var timeouts = servicesTimeOut.GetTimeouts(userId);
+            dictMail = servicesMail.GetMailsDictionary(user.UserId);
+            var results = servicesResult.GetUserResults(user.UserId);
+            var timeouts = servicesTimeOut.GetTimeouts(user.UserId);
 
             UpdateMaliList();
             UpdateResultList();
@@ -49,11 +57,12 @@ namespace WPF3.ViewModels
         private Services.ServiceTimeOut servicesTimeOut = new();
         private Services.ServiceUser servicesUser = new();
         public IRegionManager _regionManager;
-        private int userId;
+        private User user;
 
         public UserViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
+
         }
 
 
@@ -111,7 +120,7 @@ namespace WPF3.ViewModels
         private void StartTest()
         {
             if (string.IsNullOrEmpty(SelectedTest)) return;
-            if (!servicesTimeOut.Time_out_check(userId, dictTests[SelectedTest].Id))
+            if (!servicesTimeOut.Time_out_check(user.UserId, dictTests[SelectedTest].Id))
             {
                 MessageBox.Show("У вас наявне обмеження на проходження цього тест! Зачекайте та спробуйте пізніше");
                 return;
@@ -121,7 +130,7 @@ namespace WPF3.ViewModels
             NavigationParameters param = new NavigationParameters
             {
                 { "test", servicesTest.GetTest(dictTests[SelectedTest].Id) },
-                { "user", servicesUser.GetUser(userId)}
+                { "user", user}
             };
             _regionManager.RequestNavigate(Regions.ContentRegion, "Test", param);
         }
@@ -152,7 +161,7 @@ namespace WPF3.ViewModels
         private void UpdateResultList()
         {
             ResultList.Clear();
-            foreach (var item in servicesResult.GetUserResults(userId))
+            foreach (var item in servicesResult.GetUserResults(user.UserId))
             {
                 ResultList.Add($"\"{item.Tests.Name}\": {item.Result}");
             }
@@ -170,7 +179,7 @@ namespace WPF3.ViewModels
         private void UpdateTimeOutList()
         {
             TimeOutList.Clear();
-            foreach (var item in servicesTimeOut.GetTimeouts(userId))
+            foreach (var item in servicesTimeOut.GetTimeouts(user.UserId))
             {
                 TimeOutList.Add($"{item.Test.Name}, {item.ToUnblockDate.Kind}");
             }

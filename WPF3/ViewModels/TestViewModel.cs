@@ -96,7 +96,7 @@ namespace WPF3.ViewModels
             mail.UserId = user.UserId;
             mailServices.CreateMail(mail);
             MessageBox.Show("Спасибі за проходження тесту!","Тест завершенно");
-            _regionManager.RequestNavigate(Regions.ContentRegion, "User", new NavigationParameters{{"userId", user.UserId}});
+            _regionManager.RequestNavigate(Regions.ContentRegion, "User", new NavigationParameters{{"user", user}});
         }
 
         public string TestCheck()

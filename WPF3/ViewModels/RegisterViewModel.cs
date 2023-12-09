@@ -22,5 +22,7 @@ namespace WPF3.ViewModels
             get => _errorLoginStatus;
             set => SetProperty<string>(ref _errorPasswordStatus, value);
         }
+
+
     }
 }

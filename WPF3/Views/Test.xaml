@@ -6,25 +6,26 @@
              xmlns:local="clr-namespace:WPF3.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <ListView>
-            <ItemsControl ItemsSource="{Binding Elements}" Margin="108,25,108,43">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <Image Source="{Binding ImagePath}" Width="300" Height="300" />
-                            <Label Content="{Binding LabelText1}" />
-                            <Label Content="{Binding LabelText2}" />
-                            <RadioButton Content="{Binding RadioButton1}" IsChecked="{Binding IsRadioButton1Checked}" />
-                            <RadioButton Content="{Binding RadioButton2}" IsChecked="{Binding IsRadioButton2Checked}" />
-                            <RadioButton Content="{Binding RadioButton3}" IsChecked="{Binding IsRadioButton3Checked}" />
-                            <RadioButton Content="{Binding RadioButton4}" IsChecked="{Binding IsRadioButton4Checked}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Button Command="{Binding EndTestCommand}"  Content="Здати тест" Height="27" Width="124"/>
-        </ListView>
+    <UserControl.Resources>
+        <DataTemplate x:Key="listTemp" >
 
+            <StackPanel Margin="5 " >
+                <Image Source="{Binding ImagePath}" Width="300" Height="300" />
+                <Label Content="{Binding LabelText1}" />
+                <Label Content="{Binding LabelText2}" />
+                <RadioButton Content="{Binding RadioButton1}" IsChecked="{Binding IsRadioButton1Checked}" />
+                <RadioButton Content="{Binding RadioButton2}" IsChecked="{Binding IsRadioButton2Checked}" />
+                <RadioButton Content="{Binding RadioButton3}" IsChecked="{Binding IsRadioButton3Checked}" />
+                <RadioButton Content="{Binding RadioButton4}" IsChecked="{Binding IsRadioButton4Checked}" />
+            </StackPanel>
+
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ScrollViewer  Margin="0,0,0,80">
+            <ListBox ItemTemplate="{StaticResource listTemp}" ItemsSource="{Binding Elements}" Margin="10,10,42,42" Width="776" />
+        </ScrollViewer>
+        <Button Command="{Binding EndTestCommand}"  Content="Здати тест" Height="27" Width="124" Margin="338,386,338,37"/>
     </Grid>
+
 </UserControl>
