@@ -1,12 +1,7 @@
-﻿using Test.Model.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Test.Model.Entities
+namespace Test.Model
 {
     class Questions
     {
@@ -15,6 +10,7 @@ namespace Test.Model.Entities
         /// Сутність що зберігає данні про питання до тестів
         /// </summary>
         public int Id { get; set; }
+        public string Name { get; set; }
         public string? Question { get; set; }
         public string? Answer { get; set; }
 
@@ -27,6 +23,6 @@ namespace Test.Model.Entities
         public string? WAns1 { get; set; }
         public string? WAns2 { get; set; }
         public string? WAns3 { get; set; }
-        public ICollection<Tests> Tests { get; set; }
+        public List<Tests> Tests { get; set; } = new();
     }
 }

@@ -134,9 +134,9 @@ namespace WPF3.ViewModels
                 else if (r.Result == ButtonResult.OK)
                 {
                     MessageBox.Show("Все окей! Оновлюємо списки...");
-                    UpadateThemeList();
                 }
             });
+            UpadateThemeList();
         }
         #endregion
 
@@ -225,6 +225,7 @@ namespace WPF3.ViewModels
         private void UpadateThemeList()
         {
             QuestionThemeList.Clear();
+            QThemeName = serviceQuestionTheme.GetThemeDictionary();
             foreach (var item in QThemeName.Keys.ToList())
                 QuestionThemeList.Add(item);
         }

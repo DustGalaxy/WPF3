@@ -1,11 +1,4 @@
-﻿using ConsoleTestApp.Model.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test.Model.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Test.Model
 {
@@ -16,7 +9,7 @@ namespace Test.Model
         /// </summary>
         public Context() 
         {
-            
+
         }
 
         // конфігуруємо підключення до БД

@@ -6,9 +6,15 @@ using System.Text;
 
 namespace WPF3.Services
 {
-    public static class PassHasher
+    interface IPassHasher
     {
-        public static string GetSecureHash(SecureString secureString)
+        public string GetSecureHash(SecureString secureString);
+    }
+
+    
+    public class PassHasher : IPassHasher
+    {
+        public string GetSecureHash(SecureString secureString)
         {
             SHA256 sha256 = SHA256.Create();
             Span<byte> hashBytes = stackalloc byte[sha256.HashSize >> 3];
@@ -22,7 +28,7 @@ namespace WPF3.Services
             return HashToString(hashBytes);
         }
 
-        private static string HashToString(ReadOnlySpan<byte> bytes)
+        private string HashToString(ReadOnlySpan<byte> bytes)
         {
             StringBuilder sb = new StringBuilder(bytes.Length * 2);
             for (int i = 0; i < bytes.Length; i++)

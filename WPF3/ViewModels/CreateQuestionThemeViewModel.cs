@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WPF3.Model.Entities;
 using WPF3.Services;
 
@@ -48,6 +49,12 @@ namespace WPF3.ViewModels
 
         private void AddTheme()
         {
+
+            if (string.IsNullOrEmpty(ThemeDiscription) || string.IsNullOrEmpty(ThemeName))
+            {
+                MessageBox.Show("У теми немає назви або опису!", "Помилка");
+                return;
+            }
 
             ServiceQuestionTheme serviceQuestionTheme = new ServiceQuestionTheme();
             serviceQuestionTheme.CreateQustionTheme(new QuestionTheme

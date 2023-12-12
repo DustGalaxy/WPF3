@@ -57,7 +57,7 @@ namespace WPF3.ViewModels
         }
 
 
-        #region Pror`s
+        #region Prop`s
 
         public ObservableCollection<string> QuestionListFrom { get; private set; } = new ObservableCollection<string>();
         public ObservableCollection<string> QuestionListTo { get; private set; } = new ObservableCollection<string>();

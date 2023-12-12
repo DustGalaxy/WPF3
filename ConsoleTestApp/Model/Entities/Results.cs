@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Test.Model.Entities
+namespace Test.Model
 {
     class Results
     {
@@ -19,7 +14,7 @@ namespace Test.Model.Entities
         public int UserId { get; set; }
         public User User { get; set; }
         public string Result { get; set; }
-        [ForeignKey(nameof(Test))]
+        [ForeignKey(nameof(Tests))]
         public int TestId { get; set; }
         public Tests Tests { get; set; }
     }

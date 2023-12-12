@@ -25,7 +25,7 @@
         <ScrollViewer  Margin="0,0,0,80">
             <ListBox ItemTemplate="{StaticResource listTemp}" ItemsSource="{Binding Elements}" Margin="10,10,42,42" Width="776" />
         </ScrollViewer>
-        <Button Command="{Binding EndTestCommand}"  Content="Здати тест" Height="27" Width="124" Margin="338,386,338,37"/>
+        <Button Command="{Binding EndTestCommand}"  Content="Здати тест" Height="27" Width="124" Margin="338,370,338,53"/>
     </Grid>
 
 </UserControl>

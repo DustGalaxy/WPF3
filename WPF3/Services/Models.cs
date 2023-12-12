@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Windows;
 using WPF3.Model;
 using WPF3.Model.Entities;
 
@@ -116,6 +117,7 @@ namespace WPF3.Services
         public List<Questions> GetTestQuestions(Tests test);
         public void DeactivateTest(Tests test);
         public void ActivateTest(Tests test);
+
     }
 
     class ServiceTest : IDataTest
@@ -147,11 +149,32 @@ namespace WPF3.Services
             }
         }
 
+        private bool IsTestExist(Tests test)
+        {
+            using (Context context = new Context())
+            {
+                try
+                {
+                    context.Tests.Where(p => p.Name == test.Name).First();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
         public void CreateTest(Tests test)
         {
             using (Context context = new Context())
             {
+                if (IsTestExist(test))
+                {
+                    MessageBox.Show("Тест з такою назвою вже існує", "Помилка");
+                    return;
+                }
                 test.Questions = context.Qustions.Where(p => test.QuestionsId.Contains(p.Id)).ToList();
+
                 context.Tests.Add(test);
                 context.SaveChanges();
             }
@@ -230,7 +253,6 @@ namespace WPF3.Services
 
     }
 
-
     interface IDataQuestion
     {
         public void CreateQuestion(Questions question);
@@ -242,10 +264,33 @@ namespace WPF3.Services
 
     class ServiceQuestion : IDataQuestion
     {
+
+        private bool IsQuestionExist(Questions question)
+        {
+            try
+            {
+                using (Context context = new Context())
+                {
+                    context.Qustions.Where(p => p.Name == question.Name).First();
+
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
         public void CreateQuestion(Questions question)
         {
+            if (IsQuestionExist(question))
+            {
+                MessageBox.Show("Питання з такою назвою вже існує, спробуйте інше ім'я", "Помилка");
+                return;
+            }
             using (Context context = new Context())
             {
+
                 context.Qustions.Add(question);
                 context.SaveChanges();
             }
@@ -301,11 +346,33 @@ namespace WPF3.Services
 
     class ServiceQuestionTheme : IDataQuestionTheme
     {
+        private bool IsThemeExist(QuestionTheme theme)
+        {
+            try
+            {
+                using (Context context = new Context())
+                {
+                    context.QuestionThemes.Where(p => p.Name == theme.Name).First();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
         public void CreateQustionTheme(QuestionTheme theme)
         {
             using (Context context = new Context())
             {
-                context.QuestionThemes.Add(theme);
+                if (IsThemeExist(theme))
+                {
+                    MessageBox.Show("Тема з таким ім'ям вже існує, спробуйте інше ім'я", "Помилка");
+                    return;
+                }
+                context.QuestionThemes.Add(theme); 
                 context.SaveChanges();
             }
         }
@@ -352,8 +419,8 @@ namespace WPF3.Services
     interface IDataUser
     {
         public User LoginUser(string email, SecureString password);
-        public bool ValidateUser(string email);
-        public int CreateUser(User user);
+        public bool IsUserValid(string email);
+        public bool CreateUser(User user);
         public void UpdateUser(User user);
         public void DeleteUser(User user);
         public User GetUser(int Id);
@@ -368,22 +435,24 @@ namespace WPF3.Services
         {
             using (Context context = new Context())
             {
-                if (!ValidateUser(email))
+                if (!IsUserValid(email))
                 {
-                    var user = context.Users.Where(p => p.Email == email && p.Password == PassHasher.GetSecureHash(password)).First();
-                    return user;
+                    PassHasher passHasher = new PassHasher();
+
+                    return context.Users
+                        .First(p => p.Email == email && p.Password == passHasher.GetSecureHash(password));
                 }
                 throw new Exception("User dosn`t exist");
             }
         }
 
-        public bool ValidateUser(string email)
+        public bool IsUserValid(string email)
         {
             using (Context context = new Context())
             {
                 try
                 {
-                    context.Users.Where(p => p.Email == email).First();
+                    context.Users.First(p => p.Email == email);
                     return false;
                 }
                 catch (Exception ex)
@@ -393,23 +462,24 @@ namespace WPF3.Services
             }
         }
 
-        public int CreateUser(User user)
+        public bool CreateUser(User user)
         {
-            if (!ValidateUser(user.Email))
+            if (!IsUserValid(user.Email))
             {
-                return 0;
+                return false;
             }
-            Debug.WriteLine("123");
+
             using (Context context = new Context())
             {
-                SecureString secure = new SecureString();
+                //SecureString secure = new SecureString();
 
-                foreach (char i in user.Password.ToCharArray())
-                    secure.AppendChar(i);
-                user.Password = PassHasher.GetSecureHash(secure);
+                //foreach (char i in user.Password.ToCharArray())
+                //    secure.AppendChar(i);
+                //PassHasher passHasher = new PassHasher();
+                //user.Password = passHasher.GetSecureHash(secure);
                 context.Users.Add(user);
                 context.SaveChanges();
-                return 1;
+                return true;
             }
         }
 
@@ -435,7 +505,7 @@ namespace WPF3.Services
         {
             using (Context context = new Context())
             {
-                return context.Users.Where(p => p.UserId == Id).Single();
+                return context.Users.Single(p => p.UserId == Id);
             }
         }
 
@@ -477,7 +547,7 @@ namespace WPF3.Services
         public void CreateMail(Mail mail);
         public void UpdateMail(Mail mail);
         public void DeleteMail(Mail mail);
-        public Dictionary<string, Mail> GetMailsDictionary(int userId);
+        public Dictionary<int, Mail> GetMailsDictionary(int userId);
     }
 
     class ServiceMail : IDataMail
@@ -509,17 +579,17 @@ namespace WPF3.Services
             }
         }
 
-        public Dictionary<string, Mail> GetMailsDictionary(int userId)
+        public Dictionary<int, Mail> GetMailsDictionary(int userId)
         {
             List<Mail> mails = new List<Mail>();
             using (Context context = new Context())
             {
                 mails = context.Mails.Where(p => p.UserId == userId).ToList();
             }
-            Dictionary<string, Mail> pairs = new Dictionary<string, Mail>();
+            Dictionary<int, Mail> pairs = new Dictionary<int, Mail>();
             foreach (var item in mails)
             {
-                pairs.Add(item.Message, item);
+                pairs.Add(item.Id, item);
             }
             return pairs;
         }

@@ -6,19 +6,30 @@
              xmlns:local="clr-namespace:WPF3.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+
+    </UserControl.Resources>
     <Grid>
-        <Label Content="Пароль" HorizontalAlignment="Center" Margin="0,132,0,0" VerticalAlignment="Top" Height="26" Width="239"/>
-        <Label Content="{Binding ErrorLoginStatus}" HorizontalAlignment="Center" Margin="0,106,0,0" VerticalAlignment="Top" Height="26" Width="239"/>
-        <Label Content="Електрона пошта" HorizontalAlignment="Center" Margin="0,40,0,0" VerticalAlignment="Top" Height="26" Width="239"/>
-        <Label Content="{Binding ErrorPasswordStatus}" HorizontalAlignment="Center" Margin="0,260,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+        
+        <PasswordBox x:Name="PassBox" PasswordChar="{Binding Passw}" HorizontalAlignment="Center" Margin="0,230,0,0" FontSize="16" VerticalAlignment="Top" Width="239" Height="30"/>
 
+        <Button Command="{Binding NavToLoginCommand}" Content="Увійти" HorizontalAlignment="Center" Margin="0,397,0,0" VerticalAlignment="Top" Height="30" Width="172"/>
+        
+        <Button Command="{Binding RegisterCommand}" 
+                CommandParameter="{Binding ElementName = PassBox}" 
+                Content="Зареєструватися" HorizontalAlignment="Center" Margin="0,362,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.382,0.666" Height="30" Width="172"/>
+        
         <TextBox Text="{Binding Email}"  HorizontalAlignment="Center" Margin="0,71,0,0" TextWrapping="Wrap" FontSize="16" VerticalAlignment="Top" Width="240" Height="30"/>
-        <PasswordBox PasswordChar="{Binding Password}"  HorizontalAlignment="Center" Margin="0,163,0,0" FontSize="16" VerticalAlignment="Top" Width="239" Height="30"/>
+        <TextBox Text="{Binding Name}"  HorizontalAlignment="Center" Margin="0,106,0,0" TextWrapping="Wrap" FontSize="16" VerticalAlignment="Top" Width="240" Height="30"/>
+        <TextBox Text="{Binding Surname}"  HorizontalAlignment="Center" Margin="0,141,0,0" TextWrapping="Wrap" FontSize="16" VerticalAlignment="Top" Width="240" Height="30"/>
 
-        <Button Command="{Binding NavToLogin}" Content="Увійти" HorizontalAlignment="Center" Margin="0,355,0,0" VerticalAlignment="Top" Height="30" Width="172"/>
-        <Button Command="{Binding RegisterCommand}" Content="Зареєструватися" HorizontalAlignment="Center" Margin="0,320,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.382,0.666" Height="30" Width="172"/>
-        <PasswordBox PasswordChar="{Binding Password}"  HorizontalAlignment="Center" Margin="0,225,0,0" FontSize="16" VerticalAlignment="Top" Width="239" Height="30"/>
-        <Label Content="Підтвердіть пароль" HorizontalAlignment="Center" Margin="0,193,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+        <Label HorizontalContentAlignment="Right" Content="Пароль" HorizontalAlignment="Left" Margin="36,232,0,0" VerticalAlignment="Top" Height="26" Width="239"/>
+        <Label Content="{Binding ErrorLoginStatus}" HorizontalAlignment="Left" Margin="525,73,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+        <Label HorizontalContentAlignment="Right" Content="Електрона пошта" HorizontalAlignment="Left" Margin="36,73,0,0" VerticalAlignment="Top" Height="26" Width="239"/>
+        <Label Content="{Binding ErrorPasswordStatus}" HorizontalAlignment="Center" Margin="0,265,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+        <Label HorizontalContentAlignment="Right" Content="Ім'я" HorizontalAlignment="Left" Margin="36,108,0,0" VerticalAlignment="Top" Height="26" Width="239"/>
+        <Label HorizontalContentAlignment="Right" Content="Прізвище" HorizontalAlignment="Left" Margin="36,143,0,0" VerticalAlignment="Top" Height="26" Width="239"/>
 
     </Grid>
 

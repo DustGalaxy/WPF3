@@ -23,6 +23,7 @@ namespace WPF3.Views
         public Register()
         {
             InitializeComponent();
+            PassBox.Clear();
         }
     }
 }

@@ -12,12 +12,28 @@ namespace WPF3.ViewModels
 {
     public class AdminViewModel : BindableBase, INavigationAware
     {
+        #region Navigate
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            UpdTestList();
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+
+        }
+
+        #endregion
 
 
         IRegionManager _regionManager { get; set; }
-        
-
-        public ObservableCollection<string> TestList { get; private set; } = new ObservableCollection<string>();
+        static readonly Services.ServiceTest serviceTest = new Services.ServiceTest();
 
         public AdminViewModel(IRegionManager iregionManager)
         {
@@ -25,18 +41,28 @@ namespace WPF3.ViewModels
             UpdTestList();
         }
 
+        #region Update list
+
         private void FillTestLIst()
         {
-            // MessageBox.Show($"{testdict.Keys.ToList().FirstOrDefault("no")}");
+            testdict = serviceTest.GetTestsDict();
             foreach (var i in testdict.Keys.ToList())
                 TestList.Add(i);
         }
 
-        static readonly Services.ServiceTest serviceTest = new Services.ServiceTest();
-        Dictionary<string, Tests> testdict = serviceTest.GetTestsDict();
+        public void UpdTestList()
+        {
+            TestList.Clear();
+            FillTestLIst();
+        }
 
-        
-        
+        #endregion
+
+
+        #region Props
+
+        public ObservableCollection<string> TestList { get; private set; } = new ObservableCollection<string>();
+        Dictionary<string, Tests> testdict;
 
         private string _selectedtest = null;
         public string SelectedTest
@@ -52,11 +78,14 @@ namespace WPF3.ViewModels
             set => SetProperty(ref _errorlabel, value);
         }
 
+        #endregion
 
+
+        #region CreateTestCommand
 
         private DelegateCommand _createtestcommand;
 
-        public DelegateCommand CreateTestCommand => 
+        public DelegateCommand CreateTestCommand =>
             _createtestcommand ??= new DelegateCommand(CreateTestExecute);
 
         public void CreateTestExecute()
@@ -64,6 +93,10 @@ namespace WPF3.ViewModels
             _regionManager.RequestNavigate(Regions.ContentRegion, "CreateTest");
         }
 
+        #endregion
+
+
+        #region NavToLoginCommand
 
         private DelegateCommand _navToLoginCommand;
         public DelegateCommand NavToLoginCommand =>
@@ -74,14 +107,19 @@ namespace WPF3.ViewModels
             _regionManager.RequestNavigate(Regions.ContentRegion, "Login");
         }
 
+        #endregion
+
+
+        #region DeleteTestCommand
+
         private DelegateCommand _deletetestcommand;
         public DelegateCommand DeleteTestCommand => _deletetestcommand ??= new DelegateCommand(DeleteTestExecute);
 
         public void DeleteTestExecute()
         {
-            if (SelectedTest != null)
+            if (!string.IsNullOrEmpty(SelectedTest))
             {
-                var msg = MessageBox.Show("Confirm delete Test", "Delete Test", MessageBoxButton.OKCancel);
+                var msg = MessageBox.Show("Вивпевненні що хочете видалити тест?", "Видалення тесту", MessageBoxButton.OKCancel);
 
                 if (msg == MessageBoxResult.OK)
                 {
@@ -93,31 +131,12 @@ namespace WPF3.ViewModels
             }
             else
             {
-                MessageBox.Show("No test selected");
+                MessageBox.Show("Оберіть тест");
                 ErrorLabel = "No test selected";
             }
         }
 
-        public void UpdTestList()
-        {
-            TestList.Clear();
-            FillTestLIst();
-        }
+        #endregion
 
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            UpdTestList();
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            
-        }
     }
 }

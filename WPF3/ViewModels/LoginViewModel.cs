@@ -2,63 +2,47 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
-using Prism.Services.Dialogs;
 using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using WPF3.Infrastructure;
-using WPF3.Model;
-using WPF3.Model.Entities;
 using WPF3.Services;
-using WPF3.Views;
 using User = WPF3.Model.Entities.User;
 
 namespace WPF3.ViewModels
 {
     public class LoginViewModel : BindableBase, INavigationAware
     {
+
+        #region Navigate
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            Password.Dispose();
+            Email = String.Empty;
+        }
+
+        #endregion
+
         public IRegionManager _regionManager;
         public LoginViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
-
-            User admin = new User
-            {
-                Name = "admin",
-                Email = "admin",
-                Surname = "admin",
-                Password = "admin",
-                UserType = 1,
-            };
-
-            User manager = new User
-            {
-                Name = "manager",
-                Email = "manager",
-                Surname = "manager",
-                Password = "manager",
-                UserType = 2,
-            };
-
-            User user = new User
-            {
-                Name = "user",
-                Email = "user",
-                Surname = "user",
-                Password = "user",
-                UserType = 3,
-            };
-
-            serviceUser.CreateUser(admin);
-            serviceUser.CreateUser(manager);
-            serviceUser.CreateUser(user);
         }
 
+
+        #region Props
 
         private string _errorLoginStatus;
         public string ErrorLoginStatus
@@ -75,7 +59,7 @@ namespace WPF3.ViewModels
         }
 
 
-        private SecureString _password;
+        private SecureString _password = new SecureString();
         public SecureString Password
         {
             get => _password;
@@ -99,27 +83,24 @@ namespace WPF3.ViewModels
             set => SetProperty<string>(ref _debug, value);
         }
 
-        private readonly ServiceUser serviceUser = new ServiceUser();
-        private IDialogParameters dialogParameters;
+
+        #endregion
+
+
+        #region LogInCommand
 
         DelegateCommand<object> _logInCommand = null;
 
         public DelegateCommand<object> LogInCommand =>
             _logInCommand ??= new DelegateCommand<object>(LogInCommandExecute);
 
-
-
-
         void LogInCommandExecute(object parameter)
         {
-            //_regionManager.RequestNavigate(Regions.ContentRegion, "Admin", new NavigationParameters{{"userId", 2}});
-            //return;
             PasswordBox box = (PasswordBox)parameter;
             ServiceUser serviceUser = new ServiceUser();
             User user = new User();
-            if (!serviceUser.ValidateUser(Email))
+            if (!serviceUser.IsUserValid(Email))
             {
-                
                 try
                 {
                     Debug1 = Email + " " + box.SecurePassword;
@@ -131,12 +112,11 @@ namespace WPF3.ViewModels
                     switch (user.UserType)
                     {
                         case 1:
-
                             _regionManager.RequestNavigate(Regions.ContentRegion, "Admin", param);
                             break;
 
                         case 2:
-                            _regionManager.RequestNavigate(Regions.ContentRegion, "Manager", param); 
+                            _regionManager.RequestNavigate(Regions.ContentRegion, "Manager", param);
                             break;
 
                         case 3:
@@ -149,14 +129,17 @@ namespace WPF3.ViewModels
                     MessageBox.Show(ex.Message);
                     ErrorPasswordStatus = "Password error";
                 }
-                
             }
             else
             {
-                // _regionManager.RequestNavigate(Regions.ContentRegion, "Admin");
                 ErrorLoginStatus = "Login error";
             }
         }
+
+        #endregion
+
+
+        #region NavToRegister
 
         DelegateCommand _navToRegister = null;
 
@@ -166,22 +149,11 @@ namespace WPF3.ViewModels
         public void NavigateToRegister()
         {
 
-            _regionManager.RequestNavigate(Regions.ContentRegion, "Register", new NavigationParameters());
+            _regionManager.RequestNavigate(Regions.ContentRegion, "Register");
         }
 
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
+        #endregion
 
-        }
 
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            return true;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            
-        }
     }
 }

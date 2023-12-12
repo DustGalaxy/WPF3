@@ -25,27 +25,18 @@ namespace WPF3.ViewModels
             listClear();
         }
 
-        private void listClear()
-        {
-            MailList.Clear();
-            TestList.Clear();
-            ResultList.Clear();
-            TimeOutList.Clear();
-        }
-
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             user = (User)navigationContext.Parameters["user"];
             UserName = user.Name;
+
             dictTests = servicesTest.GetTestsDict();
             dictMail = servicesMail.GetMailsDictionary(user.UserId);
-            var results = servicesResult.GetUserResults(user.UserId);
-            var timeouts = servicesTimeOut.GetTimeouts(user.UserId);
 
-            UpdateMaliList();
-            UpdateResultList();
-            UpdateTestList();
-            UpdateTimeOutList();
+            // var results = servicesResult.GetUserResults(user.UserId);
+            // var timeouts = servicesTimeOut.GetTimeouts(user.UserId);
+
+            UpdateAllLists();
 
         }
 
@@ -57,7 +48,7 @@ namespace WPF3.ViewModels
         private Services.ServiceTimeOut servicesTimeOut = new();
         private Services.ServiceUser servicesUser = new();
         public IRegionManager _regionManager;
-        private User user;
+        
 
         public UserViewModel(IRegionManager regionManager)
         {
@@ -69,7 +60,8 @@ namespace WPF3.ViewModels
         #region Props
 
         private Dictionary<string, Tests> dictTests;
-        private Dictionary<string, Mail> dictMail;
+        private Dictionary<int, Mail> dictMail;
+        private User user;
 
         public ObservableCollection<string> MailList { get; private set; } = new();
         public ObservableCollection<string> TestList { get; private set; } = new();
@@ -133,6 +125,8 @@ namespace WPF3.ViewModels
                 { "user", user}
             };
             _regionManager.RequestNavigate(Regions.ContentRegion, "Test", param);
+
+            UpdateAllLists();
         }
         #endregion
 
@@ -144,19 +138,50 @@ namespace WPF3.ViewModels
 
         private void DeleteMail()
         {
-            servicesMail.DeleteMail(dictMail[SelectedMail]);
+            foreach (var item in dictMail.Values)
+            {
+                if (item.Message == SelectedMail)
+                {
+                    servicesMail.DeleteMail(item);
+                    break;
+                }
+            }
+           
             UpdateMaliList();
+        }
+
+
+        #endregion
+
+
+        #region ListUpdate
+
+        private void listClear()
+        {
+            MailList.Clear();
+            TestList.Clear();
+            ResultList.Clear();
+            TimeOutList.Clear();
+        }
+
+        private void UpdateAllLists()
+        {
+            UpdateMaliList();
+            UpdateResultList();
+            UpdateTestList();
+            UpdateTimeOutList();
         }
 
         private void UpdateMaliList()
         {
             MailList.Clear();
-            MailList.AddRange(dictMail.Keys.ToList());
+            dictMail = servicesMail.GetMailsDictionary(user.UserId);
+            foreach (var item in dictMail.Values.ToList())
+            {
+                MailList.Add(item.Message);
+            }
+
         }
-        #endregion
-
-
-        #region ListUpdate
 
         private void UpdateResultList()
         {
@@ -170,6 +195,7 @@ namespace WPF3.ViewModels
         private void UpdateTestList()
         {
             TestList.Clear();
+            dictTests = servicesTest.GetTestsDict();
             foreach (var item in servicesTest.GetActiveTests())
             {
                 TestList.Add(item.Name);

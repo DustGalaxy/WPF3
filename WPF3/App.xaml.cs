@@ -26,6 +26,7 @@ namespace WPF3
             containerRegistry.Register<Services.IElementService, Services.ElementService>();
             containerRegistry.Register<Services.IExportTxt, Services.ExportTxt>();
             containerRegistry.Register<Services.IShuffleList, Services.ShuffleListService>();
+            containerRegistry.Register<Services.IPassHasher, Services.PassHasher>();
 
 
             containerRegistry.RegisterDialog<CreateQuestionTheme, CreateQuestionThemeViewModel>("CreateQustionThemeDialog");

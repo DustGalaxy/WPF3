@@ -1,4 +1,9 @@
-﻿namespace Test.Model.Entities
+﻿
+
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Test.Model
 {
     class Tests
     {   
@@ -10,7 +15,9 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public int Count { get; set; }
-        public bool IsActived { get; set; } 
-        public ICollection<Questions> Questions { get; set; }
+        public bool IsActived { get; set; }
+        public List<Questions> Questions { get; set; } = new();
+        [NotMapped]
+        public List<int> QuestionsId { get; set; } = new();
     }
 }

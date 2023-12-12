@@ -17,6 +17,8 @@ namespace WPF3.ViewModels
             currTest = (Tests)navigationContext.Parameters["test"];
             user = (User)navigationContext.Parameters["user"];
 
+            int count = 0;
+            
             foreach (var item in currTest.Questions)
             {
                 List<string> list = new List<string>
@@ -28,9 +30,6 @@ namespace WPF3.ViewModels
                 };
                 
                 shuffleList.ShuffleList(ref list);
-
-                //ElementModel element = new ElementModel();
-                //MessageBox.Show(element.ToString());
 
                 Elements.Add(new ElementModel
                 {
@@ -47,8 +46,14 @@ namespace WPF3.ViewModels
                     IsRadioButton4Checked = false,
                     answer = item.Answer,
                 });
-            }
 
+                count++;
+                if (count >= currTest.Count)
+                {
+                    count = 0;
+                    break;
+                }
+            }
         }
 
 
@@ -59,7 +64,7 @@ namespace WPF3.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            
+            Elements.Clear();
         }
 
         Services.ShuffleListService shuffleList = new();

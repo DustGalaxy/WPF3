@@ -23,6 +23,12 @@ namespace WPF3.Views
         public Login()
         {
             InitializeComponent();
+            
+        }
+
+        public void pclear()
+        {
+            pwdPasswordBox.Clear();
         }
     }
 }
